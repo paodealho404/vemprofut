@@ -6,4 +6,5 @@ target_link_libraries(app
     GL
     GLU
     glut
+    m
 )

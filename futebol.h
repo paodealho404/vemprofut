@@ -8,6 +8,11 @@ enum Team {
     RED_BLACK,
     BLACK_WHITE
 };
+struct Ball {
+    float x;
+    float y;
+    float radius;
+};
 
 struct Player {
     float x;
