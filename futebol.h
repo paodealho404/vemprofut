@@ -4,6 +4,10 @@ struct Scoreboard {
     int scoreBlackWhiteTeam;
 };
 
+struct ForceVector {
+    float x;
+    float y;
+};
 enum Team {
     RED_BLACK,
     BLACK_WHITE
@@ -18,9 +22,9 @@ struct Player {
     float x;
     float y;
     enum Team team;
-    /**
-     * AND MORE
-     */
+    struct ForceVector attractive;
+    struct ForceVector repulsive;
+
 };
 
 void drawFootballField();
