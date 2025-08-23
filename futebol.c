@@ -40,6 +40,7 @@ struct Player players[MAX_PLAYERS] = {
 
 void drawForceVector(struct Player player)
 {
+    return;
 
     glPushMatrix();
     glColor3f(0.1, 0.0, 1.0);
@@ -81,7 +82,6 @@ void init(void)
 
 void drawScoreboard()
 {
-    
     return;
 }
 
@@ -118,12 +118,13 @@ void checkGoal()
 {
     if (ball.x >= 0 && ball.x < STRIP_OFFSET && (ball.y > WIN_HEIGHT / 3 && ball.y < 2 * WIN_HEIGHT / 3))
     {
-        printf("Goal from black white");
-        score.scoreBlackWhiteTeam+=1;
+        printf("Goal from black white\n");
+        score.scoreBlackWhiteTeam += 1;
     }
-    if (ball.x >= WIN_WIDTH - STRIP_OFFSET && ball.x < WIN_WIDTH && (ball.y > WIN_HEIGHT / 3 && ball.y < 2 * WIN_HEIGHT / 3)){
-        printf("Goal from red black");
-        score.scoreRedBlackTeam+=1;
+    if (ball.x >= WIN_WIDTH - STRIP_OFFSET && ball.x < WIN_WIDTH && (ball.y > WIN_HEIGHT / 3 && ball.y < 2 * WIN_HEIGHT / 3))
+    {
+        printf("Goal from red black\n");
+        score.scoreRedBlackTeam += 1;
     }
 }
 
@@ -134,12 +135,20 @@ void drawBall()
     float x = ball.x;
     float y = ball.y;
     float radius = ball.radius;
-    int num_segments = 10;
+    int num_segments = 8;
 
     glPushMatrix();
     glBegin(GL_POLYGON);
     for (int i = 0; i < num_segments; i++)
     {
+        if (i % (num_segments >> 1))
+        {
+            glColor3f(1.0, 1.0, 1.0);
+        }
+        else {
+            glColor3f(0.0, 0.0, 0.0);
+
+        }
         float theta = 2.0f * 3.1415926f * i / (float)num_segments;
         float dx = radius * cos(theta);
         float dy = radius * sin(theta);
