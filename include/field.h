@@ -21,4 +21,8 @@ void draw_football_field(void);
 
 struct vector2d get_field_center(void);
 
+struct vector2d get_field_offset(void);
+
+struct vector2d get_field_size(void);
+
 #endif /* FIELD_H */

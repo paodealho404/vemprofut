@@ -23,7 +23,7 @@ static struct ball_data {
 const static struct ball_const {
 	struct color ball_color;
 } constants = {
-	.ball_color = FROM_RGBA(234, 93, 1, 255),
+	.ball_color = FROM_RGBA(0, 100, 255, 255),
 };
 
 void draw_ball()
