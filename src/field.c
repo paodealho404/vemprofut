@@ -145,6 +145,7 @@ void draw_football_field()
 		draw_strip(strip_pos, strip_size, current_color);
 	}
 
+	glLineWidth(3.f);
 	draw_outline();
 	draw_area_markings();
 	draw_center_circle();
