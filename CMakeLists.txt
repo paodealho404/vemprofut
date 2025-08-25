@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.10.0)
 project(app VERSION 0.1.0 LANGUAGES C)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Find required packages
 if(APPLE)
     # On macOS, just find OpenGL (GLU is included in the OpenGL framework)
@@ -15,7 +17,9 @@ else()
 endif()
 
 # Create executable
-add_executable(app futebol.c)
+file(GLOB SOURCES "src/*.c")
+
+add_executable(app ${SOURCES})
 
 # Platform-specific linking
 if(APPLE)
@@ -44,4 +48,5 @@ endif()
 target_include_directories(app PRIVATE
     ${OPENGL_INCLUDE_DIRS}
     ${GLUT_INCLUDE_DIRS}
+    "include/"
 )
