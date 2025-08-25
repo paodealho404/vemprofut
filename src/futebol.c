@@ -44,6 +44,9 @@ void display(void)
 
 void idle(void)
 {
+	struct vector2d ball_position = get_ball_position();
+	update_teams_positions(ball_position);
+
 	glutPostRedisplay();
 }
 
@@ -63,6 +66,11 @@ void keyboard(unsigned char key, int x, int y)
 
 	if (key == 'd' || key == 'D') {
 		move_ball(VECTOR_2D(1, 0));
+	}
+
+	if (key == 'g' || key == 'G') {
+		printf("Toggle debug mode\n");
+		team_toggle_debug();
 	}
 
 	if (key == 27) {

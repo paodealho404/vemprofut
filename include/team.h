@@ -19,6 +19,8 @@ void init_teams(struct vector2d position, struct vector2d size);
 
 void draw_teams(void);
 
-void move_teams_players_to_ball(void);
+void update_teams_positions(struct vector2d ball_position);
+
+void team_toggle_debug(void);
 
 #endif /* TEAM_H */

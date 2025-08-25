@@ -11,10 +11,13 @@
 #include "color.h"
 #include "player.h"
 #include "opengl.h"
+#include "vector.h"
 #include <stdlib.h>
-#include <OpenGL/gl.h>
+#include <math.h>
 
-#define DBG_SCALE 30
+#define DBG_SCALE        30
+#define ATTRACTIVE_SCALE 7
+#define REPULSIVE_SCALE  1000
 
 static const struct player_const {
 	struct color team_colors[_TEAM_AMOUNT];
@@ -54,13 +57,48 @@ void draw_player(struct player *player)
 	glEnd();
 }
 
-void move_player_to_ball(struct player *player)
+void update_attractive_force_vector_towards_ball(struct player *player,
+						 struct vector2d ball_position, float d_star)
 {
+	float dist = sqrt(pow(ball_position.x - player->position.x, 2) +
+			  pow(ball_position.y - player->position.y, 2));
+
+	if (dist < d_star) {
+		dist = d_star;
+	}
+	player->attractive.x = ATTRACTIVE_SCALE * (ball_position.x - player->position.x) / dist;
+	player->attractive.y = ATTRACTIVE_SCALE * (ball_position.y - player->position.y) / dist;
+}
+
+void update_repulsive_force_vector_from_other_player(struct player *player,
+						     struct player *other_player, float d_star)
+{
+	float dist = sqrt(pow(other_player->position.x - player->position.x, 2) +
+			  pow(other_player->position.y - player->position.y, 2));
+
+	if (dist < 10) {
+		dist = 10;
+	}
+
+	if (dist < d_star) {
+		player->repulsive.x -=
+			REPULSIVE_SCALE * (player->position.x - other_player->position.x) / dist;
+		player->repulsive.y -=
+			REPULSIVE_SCALE * (player->position.y - other_player->position.y) / dist;
+	} else {
+		player->repulsive.x = 4 * (player->position.x - other_player->position.x) / dist;
+		player->repulsive.y = 4 * (player->position.y - other_player->position.y) / dist;
+	}
+}
+
+void update_player_position(struct player *player)
+{
+	player->position.x += (player->attractive.x - player->repulsive.x) / 20000;
+	player->position.y += (player->attractive.y - player->repulsive.y) / 20000;
 }
 
 void draw_player_force_vector(struct player *player)
 {
-#if CONFIG_DRAW_PLAYER_FORCE_VECTORS_EN
 	glPushMatrix();
 	glColor3f(0.1, 0.0, 1.0);
 	glBegin(GL_POLYGON);
@@ -97,5 +135,4 @@ void draw_player_force_vector(struct player *player)
 	glVertex2f(player->position.x, player->position.y + 8);
 	glEnd();
 	glPopMatrix();
-#endif
 }

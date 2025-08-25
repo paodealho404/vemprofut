@@ -13,8 +13,6 @@
 
 #include "vector.h"
 
-#define CONFIG_DRAW_PLAYER_FORCE_VECTORS_EN 1
-
 enum team {
 	TEAM_BLUE = 0,
 	TEAM_RED,
@@ -33,8 +31,14 @@ struct player *create_player(float x, float y, enum team team);
 
 void draw_player(struct player *player);
 
-void move_player_to_ball(struct player *player);
-
 void draw_player_force_vector(struct player *player);
+
+void update_attractive_force_vector_towards_ball(struct player *player,
+						 struct vector2d ball_position, float d_star);
+
+void update_repulsive_force_vector_from_other_player(struct player *player,
+						     struct player *other_player, float d_star);
+
+void update_player_position(struct player *player);
 
 #endif /* PLAYER_H */

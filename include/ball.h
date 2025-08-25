@@ -19,4 +19,6 @@ void move_ball(struct vector2d direction);
 
 void set_ball_position(struct vector2d position);
 
+struct vector2d get_ball_position(void);
+
 #endif /* BALL_H */

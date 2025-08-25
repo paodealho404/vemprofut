@@ -23,7 +23,7 @@ static struct ball_data {
 const static struct ball_const {
 	struct color ball_color;
 } constants = {
-	.ball_color = FROM_RGBA(0, 100, 255, 255),
+	.ball_color = FROM_RGBA(255, 100, 255, 255),
 };
 
 void draw_ball()
@@ -40,4 +40,9 @@ void move_ball(struct vector2d direction)
 void set_ball_position(struct vector2d position)
 {
 	self.position = position;
+}
+
+struct vector2d get_ball_position(void)
+{
+	return self.position;
 }
