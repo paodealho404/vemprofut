@@ -19,6 +19,7 @@ static struct field_data {
 	struct vector2d position;
 	struct vector2d size;
 	struct vector2d bounds;
+	struct vector2d center;
 	size_t strips_amount;
 } self;
 
@@ -39,6 +40,7 @@ void create_football_field(struct vector2d position, struct vector2d size, size_
 	self.size = size;
 	self.bounds = bounds;
 	self.strips_amount = strips_amount;
+	self.center = VECTOR_2D(position.x + size.x / 2.f, position.y + size.y / 2.f);
 }
 
 static void draw_strip(struct vector2d pos, struct vector2d size, struct color color)
@@ -147,4 +149,9 @@ void draw_football_field()
 	draw_area_markings(offset);
 	draw_center_circle(offset);
 	draw_goals(offset);
+}
+
+struct vector2d get_field_center(void)
+{
+	return self.center;
 }

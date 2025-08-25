@@ -2,6 +2,7 @@
 #include "opengl.h"
 #include "futebol.h"
 #include "field.h"
+#include "ball.h"
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -167,6 +168,7 @@ void display(void)
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	draw_football_field();
+	draw_ball();
 
 	glFlush();
 }
@@ -178,21 +180,20 @@ void idle(void)
 
 void keyboard(unsigned char key, int x, int y)
 {
-	printf("Tecla pressionada: %d\n", key);
 	if (key == 'w' || key == 'W') {
-		glutPostRedisplay();
+		move_ball(VECTOR_2D(0, 1));
 	}
 
 	if (key == 's' || key == 'S') {
-		glutPostRedisplay();
+		move_ball(VECTOR_2D(0, -1));
 	}
 
 	if (key == 'a' || key == 'A') {
-		glutPostRedisplay();
+		move_ball(VECTOR_2D(-1, 0));
 	}
 
 	if (key == 'd' || key == 'D') {
-		glutPostRedisplay();
+		move_ball(VECTOR_2D(1, 0));
 	}
 
 	if (key == 27) {
@@ -215,6 +216,8 @@ int main(int argc, char **argv)
 
 	create_football_field(VECTOR_2D(0.0, 0.0), VECTOR_2D(WIN_WIDTH, WIN_HEIGHT), FIELD_STRIPS,
 			      VECTOR_2D(WIN_WIDTH * 0.9, WIN_HEIGHT * 0.9));
+	struct vector2d field_center = get_field_center();
+	set_ball_position(field_center);
 
 	init();
 
