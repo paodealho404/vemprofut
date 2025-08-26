@@ -23,6 +23,8 @@ static struct field_data {
 	struct vector2d offset;
 	struct vector2d goal_size;
 	struct vector2d goal_position[2];
+	struct vector2d small_area_size;
+	struct vector2d small_area_position[2];
 	size_t strips_amount;
 } self;
 
@@ -57,6 +59,13 @@ void create_football_field(struct vector2d position, struct vector2d size, size_
 	self.goal_position[1] =
 		VECTOR_2D(self.offset.x + self.bounds.x,
 			  self.offset.y + self.bounds.y / 2.f - self.goal_size.y / 2.0);
+
+	self.small_area_size = VECTOR_2D(self.bounds.x * .15f / 2.f, self.bounds.y * .55f / 2.f);
+	self.small_area_position[0] = VECTOR_2D(
+		self.offset.x, self.offset.y + self.bounds.y / 2.f - self.small_area_size.y / 2.f);
+	self.small_area_position[1] =
+		VECTOR_2D(self.offset.x + self.bounds.x - self.small_area_size.x,
+			  self.offset.y + self.bounds.y / 2.f - self.small_area_size.y / 2.f);
 }
 
 static void draw_strip(struct vector2d pos, struct vector2d size, struct color color)
@@ -78,32 +87,29 @@ static void draw_outline(void)
 static void draw_area_markings(void)
 {
 	struct vector2d area_size = {self.bounds.x * .15f, self.bounds.y * .55f};
-	struct vector2d small_area_size = {area_size.x * .5f, area_size.y * .5f};
 
 	draw_box(VECTOR_2D(self.offset.x, self.offset.y + self.bounds.y / 2.f - area_size.y / 2.f),
 		 area_size, constants.white);
-	draw_box(VECTOR_2D(self.offset.x,
-			   self.offset.y + self.bounds.y / 2.f - small_area_size.y / 2.f),
-		 small_area_size, constants.white);
-	draw_circle_filled(VECTOR_2D(self.offset.x + (area_size.x + small_area_size.x) / 2.f,
+	draw_box(self.small_area_position[0], self.small_area_size, constants.white);
+	draw_circle_filled(VECTOR_2D(self.offset.x + (area_size.x + self.small_area_size.x) / 2.f,
 				     self.offset.y + self.bounds.y / 2.f),
-			   (small_area_size.x + small_area_size.y) * .03f / 2.f, constants.white);
+			   (self.small_area_size.x + self.small_area_size.y) * .03f / 2.f,
+			   constants.white);
 	draw_arc(VECTOR_2D(self.offset.x + area_size.x * .7f, self.offset.y + self.bounds.y / 2.f),
-		 small_area_size.y / 2.f, 301.0, 420.0, constants.white);
+		 self.small_area_size.y / 2.f, 301.0, 420.0, constants.white);
 
 	draw_box(VECTOR_2D(self.offset.x + self.bounds.x - area_size.x,
 			   self.offset.y + self.bounds.y / 2.f - area_size.y / 2.f),
 		 area_size, constants.white);
-	draw_box(VECTOR_2D(self.offset.x + self.bounds.x - small_area_size.x,
-			   self.offset.y + self.bounds.y / 2.f - small_area_size.y / 2.f),
-		 small_area_size, constants.white);
-	draw_circle_filled(
-		VECTOR_2D(self.offset.x + self.bounds.x - (area_size.x + small_area_size.x) / 2.f,
-			  self.offset.y + self.bounds.y / 2.f),
-		(small_area_size.x + small_area_size.y) * .03f / 2.f, constants.white);
+	draw_box(self.small_area_position[1], self.small_area_size, constants.white);
+	draw_circle_filled(VECTOR_2D(self.offset.x + self.bounds.x -
+					     (area_size.x + self.small_area_size.x) / 2.f,
+				     self.offset.y + self.bounds.y / 2.f),
+			   (self.small_area_size.x + self.small_area_size.y) * .03f / 2.f,
+			   constants.white);
 	draw_arc(VECTOR_2D(self.offset.x - area_size.x * .7f + self.bounds.x,
 			   self.offset.y + self.bounds.y / 2.f),
-		 small_area_size.y / 2.f, 122.f, 239.f, constants.white);
+		 self.small_area_size.y / 2.f, 122.f, 239.f, constants.white);
 }
 
 static void draw_center_circle(void)
@@ -182,4 +188,18 @@ struct vector2d get_goal_position(int index)
 	}
 
 	return self.goal_position[index];
+}
+
+struct vector2d get_small_area_size(void)
+{
+	return self.small_area_size;
+}
+
+struct vector2d get_small_area_position(int index)
+{
+	if (index != 0 && index != 1) {
+		return VECTOR_2D(0, 0);
+	}
+
+	return self.small_area_position[index];
 }

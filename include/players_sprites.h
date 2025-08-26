@@ -26,7 +26,7 @@ typedef struct {
 #define NUM_SPRITES   2
 
 // Tile indices that were extracted
-static const int sprite_tile_indices[NUM_SPRITES] = {4, 0, 5};
+static const int sprite_tile_indices[NUM_SPRITES] = {4, 5};
 
 // Sprite from tile 4 (row by row)
 static const rgba_pixel_t sprite_4[SPRITE_HEIGHT][SPRITE_WIDTH] = {

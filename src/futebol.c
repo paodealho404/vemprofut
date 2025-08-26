@@ -58,7 +58,7 @@ void idle(void)
 
 	elapsed_time += (double)(end_time - start_time) / CLOCKS_PER_SEC;
 
-	if (elapsed_time >= .1f) {
+	if (elapsed_time >= .08f) {
 		glutPostRedisplay();
 	}
 

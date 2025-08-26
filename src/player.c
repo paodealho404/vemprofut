@@ -21,6 +21,8 @@
 #define ATTRACTIVE_SCALE 7
 #define REPULSIVE_SCALE  1000
 
+#define CLAMP(x, lower, upper) (x < lower ? lower : (x > upper ? upper : x))
+
 static const struct player_const {
 	struct color team_colors[_TEAM_AMOUNT];
 } constants = {
@@ -55,8 +57,9 @@ void draw_player(struct player *player)
 	for (int i = 0; i < SPRITE_WIDTH; i++) {
 		for (int j = 0; j < SPRITE_HEIGHT; j++) {
 			rgba_pixel_t pixel = sprites[player->sprite_index][j * SPRITE_HEIGHT + i];
-			glColor4f(pixel.r + ((player->team == TEAM_RED) ? .5f : .0f), pixel.g,
-				  pixel.b + ((player->team == TEAM_BLUE) ? .5f : .0f), pixel.a);
+			glColor4f(pixel.r + ((player->team == TEAM_RED) ? .7f : .0f),
+				  pixel.g + ((player->is_goalkeeper) ? .2f : .0f),
+				  pixel.b + ((player->team == TEAM_BLUE) ? .7f : .0f), pixel.a);
 			glBegin(GL_POINTS);
 			glVertex2f(player->position.x + i,
 				   player->position.y + (SPRITE_HEIGHT - j));
@@ -110,6 +113,14 @@ void update_player_position(struct player *player)
 {
 	player->position.x += (player->attractive.x - player->repulsive.x) / 20000;
 	player->position.y += (player->attractive.y - player->repulsive.y) / 20000;
+}
+
+void update_goalkeeper_position(struct player *player, struct vector2d smal_area_pos,
+				struct vector2d small_area_size)
+{
+	player->position.y += (player->attractive.y - player->repulsive.y) / 20000;
+	player->position.y = CLAMP(player->position.y, smal_area_pos.y,
+				   smal_area_pos.y + small_area_size.y - SPRITE_HEIGHT / 2.f);
 }
 
 void draw_player_force_vector(struct player *player)

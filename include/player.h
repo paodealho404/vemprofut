@@ -13,6 +13,7 @@
 
 #include "vector.h"
 #include <stdint.h>
+#include <stdbool.h>
 
 enum team {
 	TEAM_BLUE = 0,
@@ -27,6 +28,7 @@ struct player {
 	struct vector2d repulsive;
 	enum team team;
 	uint8_t sprite_index;
+	bool is_goalkeeper;
 };
 
 struct player *create_player(float x, float y, enum team team);
@@ -44,5 +46,8 @@ void update_repulsive_force_vector_from_other_player(struct player *player,
 						     struct player *other_player, float d_star);
 
 void update_player_position(struct player *player);
+
+void update_goalkeeper_position(struct player *player, struct vector2d smal_area_pos,
+				struct vector2d small_area_size);
 
 #endif /* PLAYER_H */

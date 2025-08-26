@@ -29,4 +29,8 @@ struct vector2d get_goal_size(void);
 
 struct vector2d get_goal_position(int index);
 
+struct vector2d get_small_area_size(void);
+
+struct vector2d get_small_area_position(int index);
+
 #endif /* FIELD_H */

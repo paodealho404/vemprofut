@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2025
  *
  */
+#include "field.h"
+#include "players_sprites.h"
 #include "team.h"
 #include "player.h"
 #include "opengl.h"
@@ -22,10 +24,13 @@ static struct team_data {
 
 void init_teams(struct vector2d position, struct vector2d size)
 {
+	struct vector2d small_area_size = get_small_area_size();
+
 	struct vector2d initial_positions[_TEAM_AMOUNT * PLAYERS_PER_TEAM] = {
 		// Blue Team
 		// Goalkeeper
-		VECTOR_2D(position.x, position.y + size.y * .5f),
+		VECTOR_2D(position.x + small_area_size.x / 2.f - SPRITE_WIDTH / 2.f,
+			  position.y + size.y * .5f),
 		// Players
 		VECTOR_2D(position.x + size.x * .35f, position.y + size.y * .75f),
 		VECTOR_2D(position.x + size.x * .40f, position.y + size.y * .5f),
@@ -36,7 +41,8 @@ void init_teams(struct vector2d position, struct vector2d size)
 
 		// Red Team
 		// Goalkeeper
-		VECTOR_2D(position.x + size.x, position.y + size.y * .5f),
+		VECTOR_2D(position.x + size.x - small_area_size.x / 2.f - SPRITE_WIDTH / 2.f,
+			  position.y + size.y * .5f),
 		// Players
 		VECTOR_2D(position.x + size.x * .85f, position.y + size.y * .75f),
 		VECTOR_2D(position.x + size.x * .90f, position.y + size.y * .5f),
@@ -49,6 +55,10 @@ void init_teams(struct vector2d position, struct vector2d size)
 	for (int i = 0; i < PLAYERS_PER_TEAM * _TEAM_AMOUNT; i++) {
 		self.players[i] = create_player(initial_positions[i].x, initial_positions[i].y,
 						i < PLAYERS_PER_TEAM ? TEAM_BLUE : TEAM_RED);
+
+		if (i == 0 || i == PLAYERS_PER_TEAM) {
+			self.players[i]->is_goalkeeper = true;
+		}
 	}
 }
 
@@ -64,6 +74,8 @@ void draw_teams(void)
 
 void update_teams_positions(struct vector2d ball_position)
 {
+	struct vector2d small_area_size = get_small_area_size();
+
 	for (int i = 0; i < PLAYERS_PER_TEAM * _TEAM_AMOUNT; i++) {
 		update_attractive_force_vector_towards_ball(self.players[i], ball_position, 5);
 		self.players[i]->repulsive.x = 0;
@@ -74,7 +86,14 @@ void update_teams_positions(struct vector2d ball_position)
 				continue;
 			}
 
-			// TODO: Handle Goalkeeper differently
+			if (self.players[i]->is_goalkeeper) {
+
+				update_goalkeeper_position(
+					self.players[i],
+					get_small_area_position(self.players[i]->team),
+					small_area_size);
+				continue;
+			}
 
 			update_repulsive_force_vector_from_other_player(self.players[i],
 									self.players[j], 50);

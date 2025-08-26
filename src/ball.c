@@ -13,7 +13,7 @@
 #include "circle.h"
 #include "color.h"
 
-#define BALL_SPEED 3.0f
+#define BALL_SPEED 5.0f
 
 static struct ball_data {
 	struct vector2d position;
