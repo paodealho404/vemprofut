@@ -12,6 +12,7 @@
 #define PLAYER_H
 
 #include "vector.h"
+#include <stdint.h>
 
 enum team {
 	TEAM_BLUE = 0,
@@ -25,11 +26,14 @@ struct player {
 	struct vector2d attractive;
 	struct vector2d repulsive;
 	enum team team;
+	uint8_t sprite_index;
 };
 
 struct player *create_player(float x, float y, enum team team);
 
 void draw_player(struct player *player);
+
+void update_animation(struct player *player);
 
 void draw_player_force_vector(struct player *player);
 

@@ -13,6 +13,7 @@
 #include "opengl.h"
 #include "vector.h"
 #include <stdbool.h>
+#include <GLUT/glut.h>
 
 static struct team_data {
 	struct player *players[_TEAM_AMOUNT * PLAYERS_PER_TEAM];
@@ -68,7 +69,7 @@ void update_teams_positions(struct vector2d ball_position)
 		self.players[i]->repulsive.x = 0;
 		self.players[i]->repulsive.y = 0;
 
-		for (int j = 0; j < PLAYERS_PER_TEAM; j++) {
+		for (int j = 0; j < PLAYERS_PER_TEAM * _TEAM_AMOUNT; j++) {
 			if (i == j) {
 				continue;
 			}
@@ -79,6 +80,13 @@ void update_teams_positions(struct vector2d ball_position)
 									self.players[j], 50);
 			update_player_position(self.players[i]);
 		}
+	}
+}
+
+void update_teams_animations(void)
+{
+	for (int i = 0; i < PLAYERS_PER_TEAM * _TEAM_AMOUNT; i++) {
+		update_animation(self.players[i]);
 	}
 }
 

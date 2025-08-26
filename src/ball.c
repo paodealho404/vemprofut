@@ -13,7 +13,7 @@
 #include "circle.h"
 #include "color.h"
 
-#define BALL_RADIUS 5.0f
+#define BALL_RADIUS 10.0f
 #define BALL_SPEED  3.0f
 
 static struct ball_data {
@@ -23,7 +23,7 @@ static struct ball_data {
 const static struct ball_const {
 	struct color ball_color;
 } constants = {
-	.ball_color = FROM_RGBA(255, 100, 255, 255),
+	.ball_color = FROM_RGBA(253, 70, 1, 255),
 };
 
 void draw_ball()

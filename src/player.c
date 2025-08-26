@@ -12,8 +12,10 @@
 #include "player.h"
 #include "opengl.h"
 #include "vector.h"
+#include "players_sprites.h"
 #include <stdlib.h>
 #include <math.h>
+#include <OpenGL/gl.h>
 
 #define DBG_SCALE        30
 #define ATTRACTIVE_SCALE 7
@@ -49,19 +51,31 @@ struct player *create_player(float x, float y, enum team team)
 
 void draw_player(struct player *player)
 {
-	struct color color = constants.team_colors[player->team];
-	glColor4f(color.r, color.g, color.b, color.a);
-	glPointSize(15.f);
-	glBegin(GL_POINTS);
-	glVertex2f(player->position.x, player->position.y);
-	glEnd();
+	glPointSize(1.f);
+	for (int i = 0; i < SPRITE_WIDTH; i++) {
+		for (int j = 0; j < SPRITE_HEIGHT; j++) {
+			rgba_pixel_t pixel = sprites[player->sprite_index][j * SPRITE_HEIGHT + i];
+			glColor4f(pixel.r + ((player->team == TEAM_RED) ? .5f : .0f), pixel.g,
+				  pixel.b + ((player->team == TEAM_BLUE) ? .5f : .0f), pixel.a);
+			glBegin(GL_POINTS);
+			glVertex2f(player->position.x + i,
+				   player->position.y + (SPRITE_HEIGHT - j));
+			glEnd();
+		}
+	}
+}
+
+void update_animation(struct player *player)
+{
+	player->sprite_index = (player->sprite_index + 1) % NUM_SPRITES;
 }
 
 void update_attractive_force_vector_towards_ball(struct player *player,
 						 struct vector2d ball_position, float d_star)
 {
-	float dist = sqrt(pow(ball_position.x - player->position.x, 2) +
-			  pow(ball_position.y - player->position.y, 2));
+	double x = ball_position.x - player->position.x;
+	double y = ball_position.y - player->position.y;
+	float dist = sqrt(x * x + y * y);
 
 	if (dist < d_star) {
 		dist = d_star;
@@ -73,8 +87,9 @@ void update_attractive_force_vector_towards_ball(struct player *player,
 void update_repulsive_force_vector_from_other_player(struct player *player,
 						     struct player *other_player, float d_star)
 {
-	float dist = sqrt(pow(other_player->position.x - player->position.x, 2) +
-			  pow(other_player->position.y - player->position.y, 2));
+	double x = other_player->position.x - player->position.x;
+	double y = other_player->position.y - player->position.y;
+	float dist = sqrt(x * x + y * y);
 
 	if (dist < 10) {
 		dist = 10;

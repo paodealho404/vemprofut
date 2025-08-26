@@ -8,9 +8,10 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
-#define WIN_WIDTH    800
-#define WIN_HEIGHT   500
+#define WIN_WIDTH    900
+#define WIN_HEIGHT   600
 #define FIELD_STRIPS 16
 
 void init(void)
@@ -18,6 +19,8 @@ void init(void)
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glMatrixMode(GL_PROJECTION);
 	gluOrtho2D(0.0, WIN_WIDTH, 0.0, WIN_HEIGHT);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	create_football_field(VECTOR_2D(0.0, 0.0), VECTOR_2D(WIN_WIDTH, WIN_HEIGHT), FIELD_STRIPS,
 			      VECTOR_2D(WIN_WIDTH * 0.9, WIN_HEIGHT * 0.9));
@@ -44,10 +47,30 @@ void display(void)
 
 void idle(void)
 {
-	struct vector2d ball_position = get_ball_position();
-	update_teams_positions(ball_position);
+	static clock_t start_time = 0;
+	clock_t end_time;
+	static double elapsed_time = 0;
 
-	glutPostRedisplay();
+	if (start_time == 0) {
+		start_time = clock();
+	}
+	end_time = clock();
+
+	elapsed_time += (double)(end_time - start_time) / CLOCKS_PER_SEC;
+
+	if (elapsed_time >= .1f) {
+		glutPostRedisplay();
+	}
+
+	if (elapsed_time >= .5f) {
+		elapsed_time = 0;
+		update_teams_animations();
+	}
+	start_time = end_time;
+
+	struct vector2d ball_position = get_ball_position();
+
+	update_teams_positions(ball_position);
 }
 
 void keyboard(unsigned char key, int x, int y)
