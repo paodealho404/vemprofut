@@ -53,13 +53,34 @@ struct player *create_player(float x, float y, enum team team)
 
 void draw_player(struct player *player)
 {
+	struct color base_color = {0.208f, 0.439f, 0.631f, 1.000f};
+	struct color red_color = FROM_RGBA(255, 0, 0, 255);
+	struct color black_color = FROM_RGBA(0, 0, 0, 255);
+	struct color blue_color = FROM_RGBA(0, 0, 255, 255);
+	struct color white_color = FROM_RGBA(200, 200, 0, 255);
+
 	glPointSize(1.f);
 	for (int i = 0; i < SPRITE_WIDTH; i++) {
 		for (int j = 0; j < SPRITE_HEIGHT; j++) {
 			rgba_pixel_t pixel = sprites[player->sprite_index][j * SPRITE_HEIGHT + i];
-			glColor4f(pixel.r + ((player->team == TEAM_RED) ? .7f : .0f),
-				  pixel.g + ((player->is_goalkeeper) ? .2f : .0f),
-				  pixel.b + ((player->team == TEAM_BLUE) ? .7f : .0f), pixel.a);
+			rgba_pixel_t pixel2 = {0, 0, 0, 1.0};
+
+			if (player->team == TEAM_BLUE) {
+				pixel2.r = (player->is_goalkeeper) ? black_color.r : blue_color.r;
+				pixel2.g = (player->is_goalkeeper) ? black_color.g : blue_color.g;
+				pixel2.b = (player->is_goalkeeper) ? black_color.b : blue_color.b;
+			} else {
+				pixel2.r = (player->is_goalkeeper) ? white_color.r : red_color.r;
+				pixel2.g = (player->is_goalkeeper) ? white_color.g : red_color.g;
+				pixel2.b = (player->is_goalkeeper) ? white_color.b : red_color.b;
+			}
+
+			if (COLOR_EQ(pixel, base_color)) {
+				glColor4f(pixel2.r, pixel2.g, pixel2.b, pixel2.a);
+			} else {
+				glColor4f(pixel.r, pixel.g, pixel.b, pixel.a);
+			}
+
 			glBegin(GL_POINTS);
 			glVertex2f(player->position.x + i,
 				   player->position.y + (SPRITE_HEIGHT - j));
