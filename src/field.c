@@ -21,6 +21,8 @@ static struct field_data {
 	struct vector2d bounds;
 	struct vector2d center;
 	struct vector2d offset;
+	struct vector2d goal_size;
+	struct vector2d goal_position[2];
 	size_t strips_amount;
 } self;
 
@@ -47,6 +49,14 @@ void create_football_field(struct vector2d position, struct vector2d size, size_
 	float remaining_height = self.size.y - self.bounds.y;
 	self.offset.x = self.position.x + remaining_width / 2.f;
 	self.offset.y = self.position.y + remaining_height / 2.f;
+
+	self.goal_size = VECTOR_2D((self.size.x - self.bounds.x) / 2.f * .6f, self.bounds.y * .15f);
+	self.goal_position[0] =
+		VECTOR_2D(self.offset.x - self.goal_size.x,
+			  self.offset.y + self.bounds.y / 2.f - self.goal_size.y / 2.0);
+	self.goal_position[1] =
+		VECTOR_2D(self.offset.x + self.bounds.x,
+			  self.offset.y + self.bounds.y / 2.f - self.goal_size.y / 2.0);
 }
 
 static void draw_strip(struct vector2d pos, struct vector2d size, struct color color)
@@ -115,15 +125,8 @@ static void draw_center_circle(void)
 
 static void draw_goals(void)
 {
-	struct vector2d goal_size = {(self.size.x - self.bounds.x) / 2.f * .6f,
-				     self.bounds.y * .15f};
-
-	draw_box(VECTOR_2D(self.offset.x - goal_size.x,
-			   self.offset.y + self.bounds.y / 2.f - goal_size.y / 2.0),
-		 goal_size, constants.white);
-	draw_box(VECTOR_2D(self.offset.x + self.bounds.x,
-			   self.offset.y + self.bounds.y / 2.f - goal_size.y / 2.0),
-		 goal_size, constants.white);
+	draw_box(self.goal_position[0], self.goal_size, constants.white);
+	draw_box(self.goal_position[1], self.goal_size, constants.white);
 }
 
 void draw_football_field()
@@ -165,4 +168,18 @@ struct vector2d get_field_offset(void)
 struct vector2d get_field_size(void)
 {
 	return self.bounds;
+}
+
+struct vector2d get_goal_size(void)
+{
+	return self.goal_size;
+}
+
+struct vector2d get_goal_position(int index)
+{
+	if (index != 0 && index != 1) {
+		return VECTOR_2D(0, 0);
+	}
+
+	return self.goal_position[index];
 }

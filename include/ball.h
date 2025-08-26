@@ -13,6 +13,8 @@
 
 #include "vector.h"
 
+#define BALL_RADIUS 10.0f
+
 void draw_ball(void);
 
 void move_ball(struct vector2d direction);

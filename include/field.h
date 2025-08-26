@@ -25,4 +25,8 @@ struct vector2d get_field_offset(void);
 
 struct vector2d get_field_size(void);
 
+struct vector2d get_goal_size(void);
+
+struct vector2d get_goal_position(int index);
+
 #endif /* FIELD_H */
