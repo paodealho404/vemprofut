@@ -31,9 +31,10 @@ if(APPLE)
 elseif(UNIX AND NOT APPLE)
     # Linux specific linking
     target_link_libraries(app
-        ${OPENGL_LIBRARIES}
-        ${GLUT_LIBRARY}
-        ${GLU_LIBRARY}
+        GL
+        glut
+        GLU
+        csfml-audio
         m  # math library
     )
 else()

@@ -22,12 +22,12 @@ static struct ball_data {
 const static struct ball_const {
 	struct color ball_color;
 } constants = {
-	.ball_color = FROM_RGBA(253, 70, 1, 255),
+	.ball_color = FROM_RGBA(0, 0, 0, 255),
 };
 
 void draw_ball()
 {
-	draw_circle_filled(self.position, BALL_RADIUS, constants.ball_color);
+	draw_circle_filled(self.position, BALL_RADIUS, constants.ball_color, false);
 }
 
 void move_ball(struct vector2d direction)

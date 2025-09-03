@@ -15,12 +15,15 @@
 #include "opengl.h"
 #include "vector.h"
 #include <stdbool.h>
-#include <GLUT/glut.h>
+#include <stdio.h>
 
 static struct team_data {
 	struct player *players[_TEAM_AMOUNT * PLAYERS_PER_TEAM];
+	bool already_allocated;
 	bool debug;
-} self;
+} self = {
+    .already_allocated = false,
+};
 
 void init_teams(struct vector2d position, struct vector2d size)
 {
@@ -53,12 +56,18 @@ void init_teams(struct vector2d position, struct vector2d size)
 	};
 
 	for (int i = 0; i < PLAYERS_PER_TEAM * _TEAM_AMOUNT; i++) {
-		self.players[i] = create_player(initial_positions[i].x, initial_positions[i].y,
-						i < PLAYERS_PER_TEAM ? TEAM_BLUE : TEAM_RED);
+		if (!self.already_allocated) {
+			self.players[i] =
+				create_player(initial_positions[i].x, initial_positions[i].y,
+					      i < PLAYERS_PER_TEAM ? TEAM_BLUE : TEAM_RED);
+            self.players[i]->is_goalkeeper = (i == 0 || i == PLAYERS_PER_TEAM);
 
-		if (i == 0 || i == PLAYERS_PER_TEAM) {
-			self.players[i]->is_goalkeeper = true;
+			continue;
 		}
+
+        self.players[i]->position = initial_positions[i];
+        self.players[i]->attractive = VECTOR_2D(0, 0);
+        self.players[i]->repulsive = VECTOR_2D(0, 0);
 	}
 }
 
@@ -70,6 +79,7 @@ void draw_teams(void)
 			draw_player_force_vector(self.players[i]);
 		}
 	}
+	self.already_allocated = true;
 }
 
 void update_teams_positions(struct vector2d ball_position)

@@ -15,7 +15,6 @@
 #include "players_sprites.h"
 #include <stdlib.h>
 #include <math.h>
-#include <OpenGL/gl.h>
 
 #define DBG_SCALE        30
 #define ATTRACTIVE_SCALE 7
@@ -47,12 +46,18 @@ struct player *create_player(float x, float y, enum team team)
 	player->attractive.y = 0.0;
 	player->repulsive.x = 0.0;
 	player->repulsive.y = 0.0;
-
+    player->sprite_index = team == TEAM_BLUE ? 0 : 1;
+    
 	return player;
 }
 
 void draw_player(struct player *player)
 {
+    if(player == NULL) {
+        printf("Error: Attempted to draw a NULL player.\n");
+        return;
+    }
+
 	struct color base_color = {0.208f, 0.439f, 0.631f, 1.000f};
 	struct color red_color = FROM_RGBA(255, 0, 0, 255);
 	struct color black_color = FROM_RGBA(0, 0, 0, 255);
@@ -132,8 +137,8 @@ void update_repulsive_force_vector_from_other_player(struct player *player,
 
 void update_player_position(struct player *player)
 {
-	player->position.x += (player->attractive.x - player->repulsive.x) / 20000;
-	player->position.y += (player->attractive.y - player->repulsive.y) / 20000;
+	player->position.x += (player->attractive.x - player->repulsive.x) / 50000;
+	player->position.y += (player->attractive.y - player->repulsive.y) / 50000;
 }
 
 void update_goalkeeper_position(struct player *player, struct vector2d smal_area_pos,

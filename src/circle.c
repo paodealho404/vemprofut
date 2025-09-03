@@ -29,11 +29,19 @@ void draw_circle(struct vector2d center, float radius, struct color color)
 	glEnd();
 }
 
-void draw_circle_filled(struct vector2d center, float radius, struct color color)
+void draw_circle_filled(struct vector2d center, float radius, struct color color, bool homogeneous)
 {
 	glColor4f(color.r, color.g, color.b, color.a);
 	glBegin(GL_POLYGON);
 	for (int i = 0; i < NUM_SEGS; i++) {
+		if (!homogeneous) {
+			if (i % (NUM_SEGS >> 5) == 0) {
+				glColor4f(color.r, color.g, color.b, color.a);
+			} else {
+				glColor4f(1.0 - color.r, 1.0 - color.g, 1.0 - color.b, color.a);
+			}
+		}
+
 		float x = radius * (float)cos((float)i * theta);
 		float y = radius * (float)sin((float)i * theta);
 		glVertex2f(x + center.x, y + center.y);

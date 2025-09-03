@@ -4,6 +4,7 @@
 #include "field.h"
 #include "ball.h"
 #include "team.h"
+#include "soundboard.h"
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -14,8 +15,16 @@
 #define WIN_HEIGHT   600
 #define FIELD_STRIPS 16
 
+
+
 void init(void)
 {
+	if (init_sound_board() == -1) {
+		printf("Failed to initialize sound board\n");
+		exit(EXIT_FAILURE);
+	}
+
+    play_background_music();
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glMatrixMode(GL_PROJECTION);
 	gluOrtho2D(0.0, WIN_WIDTH, 0.0, WIN_HEIGHT);
@@ -34,9 +43,26 @@ void init(void)
 	set_ball_position(field_center);
 }
 
+void reset_game()
+{
+    play_goal_sound();
+    init_teams(get_field_offset(), get_field_size());
+    set_ball_position(get_field_center());
+}
+
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	struct vector2d ball_pos = get_ball_position();
+	enum goal_score goal = was_goal_scored(ball_pos, BALL_RADIUS);
+	if (goal == GOAL_TEAM_A) {
+		reset_game();
+		compute_goal_team_a();
+	} else if (goal == GOAL_TEAM_B) {
+		reset_game();
+		compute_goal_team_b();
+	}
 
 	draw_football_field();
 	draw_teams();
@@ -58,12 +84,13 @@ void idle(void)
 
 	elapsed_time += (double)(end_time - start_time) / CLOCKS_PER_SEC;
 
-	if (elapsed_time >= .08f) {
+	if (elapsed_time >= 1.0 / 30.0) {
 		glutPostRedisplay();
 	}
 
-	if (elapsed_time >= .5f) {
+	if (elapsed_time >= 1.0 / 5.0) {
 		elapsed_time = 0;
+
 		update_teams_animations();
 	}
 	start_time = end_time;
@@ -98,10 +125,12 @@ void keyboard(unsigned char key, int x, int y)
 
 	if (key == 27) {
 		printf("Saindo...\n");
+		destroy_sound_board();
+
 #ifdef __APPLE__
 		exit(0); // glutLeaveMainLoop is not available on macOS
 #else
-		glutLeaveMainLoop();
+		exit(0);
 #endif
 	}
 }
@@ -121,6 +150,5 @@ int main(int argc, char **argv)
 	glutKeyboardFunc(keyboard);
 
 	glutMainLoop();
-
 	return 0;
 }
