@@ -24,6 +24,7 @@ enum team {
 
 struct player {
 	struct vector2d position;
+	struct vector2d last_position;
 	struct vector2d attractive;
 	struct vector2d repulsive;
 	enum team team;

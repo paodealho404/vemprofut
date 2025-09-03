@@ -13,12 +13,15 @@
 #include "opengl.h"
 #include "vector.h"
 #include "players_sprites.h"
+
 #include <stdlib.h>
 #include <math.h>
+#include <stdio.h>
 
 #define DBG_SCALE        30
 #define ATTRACTIVE_SCALE 7
 #define REPULSIVE_SCALE  1000
+#define MIN_MOVEMENT_THRESHOLD 0.00003
 
 #define CLAMP(x, lower, upper) (x < lower ? lower : (x > upper ? upper : x))
 
@@ -96,7 +99,12 @@ void draw_player(struct player *player)
 
 void update_animation(struct player *player)
 {
-	player->sprite_index = (player->sprite_index + 1) % NUM_SPRITES;
+    static int x = 0;
+    float val = sqrt(pow((player->position.x - player->last_position.x), 2) + pow((player->position.y - player->last_position.y), 2));
+
+    if(val >= MIN_MOVEMENT_THRESHOLD) {
+        player->sprite_index = (player->sprite_index + 1) % NUM_SPRITES;
+    }
 }
 
 void update_attractive_force_vector_towards_ball(struct player *player,
@@ -137,13 +145,15 @@ void update_repulsive_force_vector_from_other_player(struct player *player,
 
 void update_player_position(struct player *player)
 {
-	player->position.x += (player->attractive.x - player->repulsive.x) / 50000;
-	player->position.y += (player->attractive.y - player->repulsive.y) / 50000;
+    player->last_position = player->position;
+	player->position.x += (player->attractive.x - player->repulsive.x) / 25000;
+	player->position.y += (player->attractive.y - player->repulsive.y) / 25000;
 }
 
 void update_goalkeeper_position(struct player *player, struct vector2d smal_area_pos,
 				struct vector2d small_area_size)
 {
+    player->last_position = player->position;
 	player->position.y += (player->attractive.y - player->repulsive.y) / 20000;
 	player->position.y = CLAMP(player->position.y, smal_area_pos.y,
 				   smal_area_pos.y + small_area_size.y - SPRITE_HEIGHT / 2.f);
