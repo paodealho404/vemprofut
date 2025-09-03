@@ -15,7 +15,14 @@
 #define WIN_HEIGHT   600
 #define FIELD_STRIPS 16
 
+#include <time.h>
 
+void sleep(double s) {
+    time_t cur_time = time(NULL);
+    while ((difftime(time(NULL), cur_time)) < s);
+}
+
+static bool game_started = false;
 
 void init(void)
 {
@@ -23,6 +30,9 @@ void init(void)
 		printf("Failed to initialize sound board\n");
 		exit(EXIT_FAILURE);
 	}
+
+    play_initial_music();
+    sleep(3);
 
     play_background_music();
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -45,6 +55,7 @@ void init(void)
 
 void reset_game()
 {
+    play_tafarel_sound();
     play_goal_sound();
     init_teams(get_field_offset(), get_field_size());
     set_ball_position(get_field_center());
@@ -83,6 +94,12 @@ void idle(void)
 	end_time = clock();
 
 	elapsed_time += (double)(end_time - start_time) / CLOCKS_PER_SEC;
+
+    if(!game_started) {
+        sleep(1);
+        game_started = true;
+        return;
+    }
 
 	if (elapsed_time >= 1.0 / 30.0) {
 		glutPostRedisplay();

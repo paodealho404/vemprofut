@@ -12,7 +12,10 @@
 #define SOUND_BOARD_H
 
 int init_sound_board(void);
+void destroy_sound_board(void);
 void play_background_music(void);
 void play_goal_sound(void);
+void play_initial_music(void);
+void play_tafarel_sound(void);
 
 #endif /* SOUND_BOARD_H */
