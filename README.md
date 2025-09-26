@@ -1,6 +1,6 @@
 ## Descrição do Projeto
 
-Este projeto foi desenvolvido como parte da avaliação parcial da disciplina de Computação Gráfica na Universidade Federal de Alagoas (UFAL). O objetivo principal é aplicar conceitos fundamentais de computação gráfica, utilizando ferramentas e técnicas para criar uma aplicação visualmente interativa e funcional.
+Este projeto foi desenvolvido como parte da avaliação parcial da disciplina de Computação Gráfica na Universidade Federal de Alagoas (UFAL). O objetivo principal é aplicar conceitos fundamentais de computação gráfica, utilizando ferramentas e técnicas para criar uma aplicação visualmente interativa e funcional. Neste repositório, encontra-se um vídeo demonstrativo (`futebol-video.mp4`) do projeto, com áudio e apresentação das features exigidas.
 
 1. O projeto explora tópicos como renderização, transformações geométricas, manipulação de imagens e outros conceitos essenciais da área. Ele foi projetado para demonstrar o aprendizado e a aplicação prática dos conteúdos abordados em sala de aula.
 
@@ -21,11 +21,7 @@ Imagem de exemplo do programa:
  <img width=650x height=475px src="asset/image.png" alt="Project logo"></a>
 </p>
 
-
-
-
 ## Execução do Programa:
-
 
 ```bash
 mkdir build
