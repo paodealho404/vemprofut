@@ -24,8 +24,21 @@ struct color {
 	float a; // Componente alfa (transparência)
 };
 
+/**
+ * @brief Cria uma cor a partir de valores RGBA
+ * @param r Componente vermelho (0-255)
+ * @param g Componente verde (0-255)
+ * @param b Componente azul (0-255)
+ * @param a Componente alfa (0-255)
+ * @return Estrutura de cor com valores normalizados
+ */
 struct color fromRGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
+/**
+ * @brief Cria uma cor a partir de um valor hexadecimal
+ * @param hexValue String contendo o valor hexadecimal da cor
+ * @return Estrutura de cor correspondente
+ */
 struct color fromHex(const char *hexValue);
 
 #endif /* COLOR_H */

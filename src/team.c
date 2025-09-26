@@ -25,6 +25,11 @@ static struct team_data {
     .already_allocated = false,
 };
 
+/**
+ * @brief Inicializa os times com posições no campo
+ * @param position Posição base para inicialização
+ * @param size Tamanho da área de jogo
+ */
 void init_teams(struct vector2d position, struct vector2d size)
 {
 	struct vector2d small_area_size = get_small_area_size();
@@ -71,6 +76,9 @@ void init_teams(struct vector2d position, struct vector2d size)
 	}
 }
 
+/**
+ * @brief Desenha todos os times na tela
+ */
 void draw_teams(void)
 {
 	for (int i = 0; i < PLAYERS_PER_TEAM * _TEAM_AMOUNT; i++) {

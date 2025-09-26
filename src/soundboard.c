@@ -12,6 +12,10 @@ static struct {
     sfMusic *tafarel_music;
 } self = {};
 
+/**
+ * @brief Inicializa o sistema de som
+ * @return 0 em caso de sucesso, -1 em caso de erro
+ */
 int init_sound_board(void) {
     self.background_music = sfMusic_createFromFile("../../../asset/background.wav");
     if (!self.background_music) {
@@ -73,6 +77,9 @@ void play_tafarel_sound(void) {
     sfMusic_play(self.tafarel_music);
 }
 
+/**
+ * @brief Destrói o sistema de som e libera recursos
+ */
 void destroy_sound_board(void) {
     sfMusic_destroy(self.background_music);
     sfMusic_destroy(self.goal_music);

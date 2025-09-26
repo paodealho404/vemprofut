@@ -35,6 +35,13 @@ static const struct player_const {
 		},
 };
 
+/**
+ * @brief Cria um novo jogador
+ * @param x Posição X inicial do jogador
+ * @param y Posição Y inicial do jogador
+ * @param team Time do jogador
+ * @return Ponteiro para o jogador criado
+ */
 struct player *create_player(float x, float y, enum team team)
 {
 	struct player *player = malloc(sizeof(struct player));
@@ -54,6 +61,10 @@ struct player *create_player(float x, float y, enum team team)
 	return player;
 }
 
+/**
+ * @brief Desenha o jogador na tela
+ * @param player Ponteiro para o jogador a ser desenhado
+ */
 void draw_player(struct player *player)
 {
     if(player == NULL) {

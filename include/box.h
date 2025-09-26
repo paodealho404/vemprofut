@@ -14,6 +14,12 @@
 #include "vector.h"
 #include "color.h"
 
+/**
+ * @brief Desenha um retângulo sem preenchimento na tela
+ * @param pos Posição do retângulo
+ * @param size Tamanho do retângulo
+ * @param color Cor do retângulo
+ */
 void draw_box(struct vector2d pos, struct vector2d size, struct color color);
 
 #endif /* BOX_H */

@@ -50,6 +50,13 @@ const static struct field_const {
 	.white = FROM_RGBA(255, 255, 255, 255),
 };
 
+/**
+ * @brief Cria um campo de futebol com as especificações dadas
+ * @param position Posição do campo
+ * @param size Tamanho do campo
+ * @param strips_amount Quantidade de listras no campo
+ * @param bounds Limites do campo
+ */
 void create_football_field(struct vector2d position, struct vector2d size, size_t strips_amount,
 			   struct vector2d bounds)
 {
@@ -174,6 +181,9 @@ static void draw_scoreboard(int score_x_pos, int score_y_pos, int score_width, i
     draw_text(score_x_pos - ((score_width + strlen(score_text)) / 2.0) - SCORE_PADDING_X , score_y_pos - (score_height / 2) - SCORE_PADDING_Y, score_text);
 }
 
+/**
+ * @brief Desenha o campo de futebol na tela
+ */
 void draw_football_field()
 {
 	float strip_width = self.size.x / ((float)self.strips_amount);
@@ -259,11 +269,17 @@ enum goal_score was_goal_scored(struct vector2d ball_position, float ball_radius
 	return NO_GOAL;
 }
 
+/**
+ * @brief Computa um gol para o time A
+ */
 void compute_goal_team_a(void)
 {
 	self.team_scores.team_a++;
 }
 
+/**
+ * @brief Computa um gol para o time B
+ */
 void compute_goal_team_b(void)
 {
 	self.team_scores.team_b++;

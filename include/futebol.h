@@ -26,17 +26,66 @@ struct Player {
 	struct ForceVector repulsive;
 };
 
+/**
+ * @brief Desenha o campo de futebol
+ */
 void drawFootballField();
+
+/**
+ * @brief Desenha todos os jogadores
+ */
 void drawPlayers();
+
+/**
+ * @brief Desenha a bola
+ */
 void drawBall();
+
+/**
+ * @brief Desenha o placar
+ */
 void drawScoreboard();
+
+/**
+ * @brief Desenha a área do gol
+ */
 void drawGoalArea();
+
+/**
+ * @brief Desenha o contorno do campo de futebol
+ */
 void drawFootballFieldOutline();
+
+/**
+ * @brief Desenha o time rubro-negro
+ */
 void drawRedBlackTeam();
+
+/**
+ * @brief Desenha o time alvinegro
+ */
 void drawBlackWhiteTeam();
+
+/**
+ * @brief Muda a animação do jogador
+ * @param player Jogador cuja animação será alterada
+ */
 void changePlayerAnimation(struct Player player);
+
+/**
+ * @brief Toca a trilha sonora do jogo
+ */
 void playGameOST();
+
+/**
+ * @brief Toca o som de gol
+ */
 void playGoalSound();
+
+/**
+ * @brief Move o jogador em direção à bola
+ * @param player Jogador a ser movido
+ */
 void movePlayerToBall(struct Player player);
 
 /*

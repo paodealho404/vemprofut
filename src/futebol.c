@@ -24,6 +24,9 @@ void sleep(double s) {
 
 static bool game_started = false;
 
+/**
+ * @brief Inicializa o jogo
+ */
 void init(void)
 {
 	if (init_sound_board() == -1) {
@@ -53,6 +56,9 @@ void init(void)
 	set_ball_position(field_center);
 }
 
+/**
+ * @brief Reinicia o jogo
+ */
 void reset_game()
 {
     play_tafarel_sound();

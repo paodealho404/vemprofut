@@ -11,6 +11,12 @@
 #include "box.h"
 #include "opengl.h"
 
+/**
+ * @brief Desenha um retângulo vazio na tela
+ * @param pos Posição do retângulo
+ * @param size Tamanho do retângulo
+ * @param color Cor do retângulo
+ */
 void draw_box(struct vector2d pos, struct vector2d size, struct color color)
 {
 	glColor4f(color.r, color.g, color.b, color.a);

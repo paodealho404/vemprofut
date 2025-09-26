@@ -25,22 +25,37 @@ const static struct ball_const {
 	.ball_color = FROM_RGBA(0, 0, 0, 255),
 };
 
+/**
+ * @brief Desenha a bola na tela
+ */
 void draw_ball()
 {
 	draw_circle_filled(self.position, BALL_RADIUS, constants.ball_color, false);
 }
 
+/**
+ * @brief Move a bola em uma direção específica
+ * @param direction Vetor de direção para movimentar a bola
+ */
 void move_ball(struct vector2d direction)
 {
 	self.position.x += direction.x * BALL_SPEED;
 	self.position.y += direction.y * BALL_SPEED;
 }
 
+/**
+ * @brief Define a posição da bola
+ * @param position Nova posição da bola
+ */
 void set_ball_position(struct vector2d position)
 {
 	self.position = position;
 }
 
+/**
+ * @brief Obtém a posição atual da bola
+ * @return Posição atual da bola
+ */
 struct vector2d get_ball_position(void)
 {
 	return self.position;

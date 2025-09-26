@@ -1,11 +1,8 @@
-
-
-
 ## Descrição do Projeto
 
 Este projeto foi desenvolvido como parte da avaliação parcial da disciplina de Computação Gráfica na Universidade Federal de Alagoas (UFAL). O objetivo principal é aplicar conceitos fundamentais de computação gráfica, utilizando ferramentas e técnicas para criar uma aplicação visualmente interativa e funcional.
 
-O projeto explora tópicos como renderização, transformações geométricas, manipulação de imagens e outros conceitos essenciais da área. Ele foi projetado para demonstrar o aprendizado e a aplicação prática dos conteúdos abordados em sala de aula.
+1. O projeto explora tópicos como renderização, transformações geométricas, manipulação de imagens e outros conceitos essenciais da área. Ele foi projetado para demonstrar o aprendizado e a aplicação prática dos conteúdos abordados em sala de aula.
 
 ### Funcionalidades
 
@@ -17,10 +14,23 @@ O projeto explora tópicos como renderização, transformações geométricas, m
 
 Estas funcionalidades foram desenvolvidas para oferecer uma experiência completa e envolvente, destacando os conceitos aprendidos na disciplina.
 
-
 Imagem de exemplo do programa:
 
 <p align="center">
   <a href="" rel="noopener">
  <img width=650x height=475px src="asset/image.png" alt="Project logo"></a>
 </p>
+
+
+
+
+## Execução do Programa:
+
+
+```bash
+mkdir build
+cd build
+cmake ..
+make
+./app
+```
